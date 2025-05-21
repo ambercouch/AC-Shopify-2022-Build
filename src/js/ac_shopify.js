@@ -2,7 +2,7 @@
  * ACSTK v4
  *
  */
-console.log('Test hero')
+console.log('Test variant image')
 const ACSTK = {
     common: {
         init: function () {
@@ -393,36 +393,27 @@ const ACSTK = {
 
             //$('.c-product-gallery__focus-image:first-child .c-product-gallery__wrapper').removeClass('u-hidden');
             $(document).on('click', '.c-product-gallery__link--thumb', function (e) {
-                console.log('Thumb click');
-                e.preventDefault()
+                e.preventDefault();
 
-                let galleryThumb = $(this);
-                let thumbId = galleryThumb.attr('data-thumbnail-id');
-                let $realOption = $('option[data-image-id=' + thumbId + ']');
-                let variantName = $realOption.attr('data-option-name');
-                let $variantSelect = $('[data-single-option-selector]')
+                const galleryThumb = $(this);
+                const thumbId = galleryThumb.attr('data-thumbnail-id');
+                const $realOption = $('option[data-image-id="' + thumbId + '"]');
+                const $variantSelect = $('[data-single-option-selector]');
 
-                $variantSelect.val(variantName).change();
-
-                console.log('variant update')
-                console.log("$realOption")
-                console.log($realOption)
-                console.log('variantName')
-                console.log(variantName)
-                console.log("$variantSelectedOption")
-                console.log($variantSelectedOption)
-
-
-                let galleryImage = $('.c-product-gallery__wrapper[data-image-id=' + thumbId + ']')
-
-
-
+                // Always show the selected image
+                const galleryImage = $('.c-product-gallery__wrapper[data-image-id="' + thumbId + '"]');
                 $('.c-product-gallery__wrapper').addClass('u-hidden').queue(function(next){
                     galleryImage.removeClass('u-hidden');
                     next();
-                })
+                });
 
+                // Only update variant select if this image is tied to a variant
+                if ($realOption.length) {
+                    const variantName = $realOption.attr('data-option-name');
+                    $variantSelect.val(variantName).trigger('change');
+                }
             });
+
 
             $(document).on('change', '[data-single-option-selector]', function (e) {
 
